@@ -1,0 +1,30 @@
+def show_linearization(f,n=100):
+    # f is a function that maps R^2 to R^2 for example
+    # f(x,y) = ((x^2+2*(x+2)*(y+1))/4-1,y^2-(x+1)*y)
+    # The output is three areas:
+        # the unit cube
+        # the image of unit cube under f
+        # the linearization of the image using the Jacobian of f at (0,0)
+    
+    var('x y')
+    A = jacobian(f,(x,y))(0,0)
+    p = f(0,0)
+    domxy = []
+    imgxy = []
+    jacxy = []
+    for i in range(n+1):
+        for j in range(n+1):
+            domxy.append((i/n,j/n))
+            imgxy.append(f(i/n,j/n))
+            jacxy.append(p+A*vector([i/n,j/n]))
+            
+    P = points(domxy,color="blue",aspect_ratio=1, alpha = .3)
+    Q = points(imgxy,color="red",aspect_ratio=1, alpha = .3)
+    R = points(jacxy,color="green",aspect_ratio=1, alpha = .3)
+    
+    (P+Q+R).show()
+    
+########################
+# Sample run:
+f(x,y) = ((x^2+2*(x+2)*(y+1))/4-1,y^2-(x+1)*y)
+show_linearization(f)
